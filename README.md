@@ -57,7 +57,7 @@ This solution consists of a group of console applications used to demonstrate pa
   
 -Data is stored in special fast-storage called Registers.  
 -The Control Unit has a register called the Program Counter -  
-	The Program Counter stores the address of the next instruction.  
+> The Program Counter stores the address of the next instruction.  
   
 #### Interconnection (Bus)
 -Collection of parallel wires.  
@@ -65,7 +65,7 @@ This solution consists of a group of console applications used to demonstrate pa
 -Data is written and stored to memory.  
   
 -The separation is the Von Neumann Bottleneck -  
-	Execution times are traditionally much faster than fetch times.  
+> Execution times are traditionally much faster than fetch times.  
   
   
 ## Threading
@@ -103,13 +103,13 @@ This solution consists of a group of console applications used to demonstrate pa
 -Efficiency = Speedup/p  
 -Toverhead = Tparallel - Tserial/p  
 -Measuring Time of Execution -  
-	start = get_curr_time();  
-	/* Code of interest */  
-	finish = get_curr_time();  
-	print finish - start;  
+> start = get_curr_time();  
+> /* Code of interest */  
+> finish = get_curr_time();  
+> print finish - start;  
 -Getting the (wall clock) time -  
-	MPI => MPI_Wtime  
-	OpenMP => omp_get_wtime  
+> MPI => MPI_Wtime  
+> OpenMP => omp_get_wtime  
 -Synchronize all processes, then get the individual times of all processes.  
 -Take the maximum time of the individual processes.  
 -Run the program multiple times.  
