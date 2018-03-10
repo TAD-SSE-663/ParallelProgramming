@@ -26,13 +26,11 @@ int main(int argc, char* argv[])
 	thread_handles = malloc(thread_count * sizeof(pthread_t));
 
 	// Creation of each of the threads. Starts each thread execution.
-	for (long thread = 0; thread < thread_count; thread++)
-	{
+	for (long thread = 0; thread < thread_count; thread++) {
 		pthread_create(&thread_handles[thread], NULL, Barrier, (void*) thread);
     }
 	// Stopping of each of the threads.
-	for (long thread = 0; thread < thread_count; thread++)
-	{
+	for (long thread = 0; thread < thread_count; thread++) {
 		pthread_join(thread_handles[thread], NULL);
 	}
 	free(thread_handles);
@@ -48,23 +46,17 @@ void* Barrier(void* rank)
     long thread_rank = (long) rank;
     pthread_mutex_lock(&mutex);
     counter++;
-    if (counter == thread_count)
-    {
+    if (counter == thread_count) {
         counter = 0;
         pthread_cond_broadcast(&condition);
-    }
-    else
-    {
+    } else {
         while (pthread_cond_wait(&condition, &mutex) != 0);
     }
     pthread_mutex_unlock(&mutex);
     // To test that wait was successfull.
-    if (counter == 0)
-    {
+    if (counter == 0) {
         printf("Thread %ld waited at the barrier correctly.\n", thread_rank);
-    }
-    else
-    {
+    } else {
         printf("\nThread %ld did not wait at the barrier correctly.\n\n", thread_rank);
     }
 

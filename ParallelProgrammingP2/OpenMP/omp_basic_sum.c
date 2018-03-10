@@ -25,16 +25,14 @@ int main(int argc, char* argv[])
     char line[10];
     int *data = malloc(sizeof(int) * num_data);
     int line_index = 0;
-    while (line_index < num_data && fgets(line, sizeof(line), data_file) != NULL)
-    {
+    while (line_index < num_data && fgets(line, sizeof(line), data_file) != NULL) {
         data[line_index++] = strtol(line, NULL, 10);
     }
 
     // Serial execution.
     clock_gettime(CLOCK_MONOTONIC, &s_t);
     tot_sum = 0;
-    for (int i = 0; i < num_data; i++)
-    {
+    for (int i = 0; i < num_data; i++) {
         tot_sum += data[i];
     }
     clock_gettime(CLOCK_MONOTONIC, &e_t);
@@ -82,8 +80,7 @@ int main(int argc, char* argv[])
 #   pragma omp parallel for num_threads(thread_count) \
         reduction(+:tot_sum) default(none) private(i) \
         shared(num_data, data)
-    for (i = 0; i < num_data; i++)
-    {
+    for (i = 0; i < num_data; i++) {
         tot_sum += data[i];
     }
     clock_gettime(CLOCK_MONOTONIC, &e_t);
@@ -105,8 +102,7 @@ void Sum_Crit(const int data[], const int num_data, int *tot_sum)
     int num_loops = num_data / thread_count;
     int start_index = num_loops * thread_rank;
     int sum = 0;
-    for (int i = start_index; i < start_index + num_loops; i++)
-    {
+    for (int i = start_index; i < start_index + num_loops; i++) {
         sum += data[i];
     }
 #   pragma omp critical
@@ -120,8 +116,7 @@ int Sum(const int data[], const int num_data)
     int num_loops = num_data / thread_count;
     int start_index = num_loops * thread_rank;
     int sum = 0;
-    for (int i = start_index; i < start_index + num_loops; i++)
-    {
+    for (int i = start_index; i < start_index + num_loops; i++) {
         sum += data[i];
     }
     return sum;

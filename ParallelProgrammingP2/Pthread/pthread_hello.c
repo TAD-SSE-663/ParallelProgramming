@@ -22,8 +22,7 @@ int main(int argc, char* argv[])
 	// Serial execution.
     clock_gettime(CLOCK_MONOTONIC, &ser_s_t);
 	printf("Hello from the main thread.\n");
-    for (int i = 0; i < thread_count; i++)
-    {
+    for (int i = 0; i < thread_count; i++) {
         printf("Hello from pseudo-thread %d of %d.\n", (i + 1), thread_count);
     }
     clock_gettime(CLOCK_MONOTONIC, &ser_e_t);
@@ -38,14 +37,12 @@ int main(int argc, char* argv[])
 	thread_handles = malloc(thread_count * sizeof(pthread_t));
 
 	// Creation of each of the threads. Starts each thread execution.
-	for (long thread = 0; thread < thread_count; thread++)
-	{
+	for (long thread = 0; thread < thread_count; thread++) {
 		pthread_create(&thread_handles[thread], NULL, Hello, (void*) thread);
 	}
 	printf("Hello from the main thread.\n");
 	// Stopping of each of the threads.
-	for (long thread = 0; thread < thread_count; thread++)
-	{
+	for (long thread = 0; thread < thread_count; thread++) {
 		pthread_join(thread_handles[thread], NULL);
 	}
 	free(thread_handles); // Free up the memory allocated to the threads.
@@ -62,14 +59,12 @@ int main(int argc, char* argv[])
 	overhead_thread_handles = malloc(thread_count * sizeof(pthread_t));
 
 	// Creation of each of the threads. Starts each thread execution.
-	for (long thread = 0; thread < thread_count; thread++)
-	{
+	for (long thread = 0; thread < thread_count; thread++) {
 		pthread_create(&overhead_thread_handles[thread], NULL, Hello_Overhead, (void*) thread);
 	}
 	printf("Hello from the main thread.\n");
 	// Stopping of each of the threads.
-	for (long thread = 0; thread < thread_count; thread++)
-	{
+	for (long thread = 0; thread < thread_count; thread++) {
 		pthread_join(overhead_thread_handles[thread], NULL);
 	}
 	// Free up the memory allocated to the threads.

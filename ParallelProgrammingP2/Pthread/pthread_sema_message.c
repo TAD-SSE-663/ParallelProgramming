@@ -23,8 +23,7 @@ int main(int argc, char* argv[])
     // Initialize semaphores for messages.
     sema = malloc(thread_count * sizeof(sem_t*));
     messages = malloc(thread_count * sizeof(char*));
-    for (int i = 0; i < thread_count; i++)
-    {
+    for (int i = 0; i < thread_count; i++) {
         sem_init(&sema[i], 0, 0);
         messages[i] = NULL;
     }
@@ -34,18 +33,15 @@ int main(int argc, char* argv[])
 	thread_handles = malloc(thread_count * sizeof(pthread_t));
 
 	// Creation of each of the threads. Starts each thread execution.
-	for (long thread = 0; thread < thread_count; thread++)
-	{
+	for (long thread = 0; thread < thread_count; thread++) {
 		pthread_create(&thread_handles[thread], NULL, Send_MSG, (void*) thread);
     }
 	// Stopping of each of the threads.
-	for (long thread = 0; thread < thread_count; thread++)
-	{
+	for (long thread = 0; thread < thread_count; thread++) {
 		pthread_join(thread_handles[thread], NULL);
 	}
     // Destroy each semaphore and free allocated memory.
-    for (int i = 0; i < thread_count; i++)
-    {
+    for (int i = 0; i < thread_count; i++) {
         sem_destroy(&sema[i]);
         free(messages);
     }

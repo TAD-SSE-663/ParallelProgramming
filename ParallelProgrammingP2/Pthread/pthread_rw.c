@@ -6,8 +6,7 @@ pthread_rwlock_t rw_lock;
 int thread_count;
 int num_data;
 
-struct list_node
-{
+struct list_node {
     int data;
     struct list_node *next;
 };
@@ -29,8 +28,7 @@ int main(int argc, char* argv[])
     num_data = strtol(argv[2], NULL, 10);
     char line[10];
     int line_index = 0;
-    while (line_index < num_data && fgets(line, sizeof(line), data_file) != NULL)
-    {
+    while (line_index < num_data && fgets(line, sizeof(line), data_file) != NULL) {
         Insert(strtol(line, NULL, 10), &root);
         line_index++;
     }
@@ -49,13 +47,11 @@ int main(int argc, char* argv[])
 	thread_handles = malloc(thread_count * sizeof(pthread_t));
 
 	// Creation of each of the threads. Starts each thread execution.
-	for (long thread = 0; thread < thread_count; thread++)
-	{
+	for (long thread = 0; thread < thread_count; thread++) {
 		pthread_create(&thread_handles[thread], NULL, Test_List, (void*) thread);
     }
 	// Stopping of each of the threads.
-	for (long thread = 0; thread < thread_count; thread++)
-	{
+	for (long thread = 0; thread < thread_count; thread++) {
 		pthread_join(thread_handles[thread], NULL);
 	}
     pthread_rwlock_destroy(&rw_lock); // Destory mutex.
@@ -73,28 +69,21 @@ int Insert(int val, struct list_node **root_n)
     struct list_node *curr_n = *root_n;
     struct list_node *pred_n = NULL;
     struct list_node *temp_n;
-    while (curr_n != NULL && curr_n -> data < val)
-    {
+    while (curr_n != NULL && curr_n -> data < val) {
         pred_n = curr_n;
         curr_n = curr_n -> next;
     }
-    if (curr_n == NULL || curr_n -> data > val)
-    {
+    if (curr_n == NULL || curr_n -> data > val) {
         temp_n = malloc(sizeof(struct list_node));
         temp_n -> data = val;
         temp_n -> next = curr_n;
-        if (pred_n == NULL)
-        {
+        if (pred_n == NULL) {
             *root_n = temp_n;
-        }
-        else
-        {
+        } else {
             pred_n -> next = temp_n;
         }
         return 1;
-    }
-    else
-    {
+    } else {
         return 0;
     }
 }
@@ -103,27 +92,20 @@ int Delete(int val, struct list_node **root_n)
 {
     struct list_node *curr_n = *root_n;
     struct list_node *pred_n = NULL;
-    while (curr_n != NULL && curr_n -> data < val)
-    {
+    while (curr_n != NULL && curr_n -> data < val) {
         pred_n = curr_n;
         curr_n = curr_n -> next;
     }
-    if (curr_n != NULL && curr_n -> data == val)
-    {
-        if (pred_n == NULL)
-        {
+    if (curr_n != NULL && curr_n -> data == val) {
+        if (pred_n == NULL) {
             *root_n = curr_n -> next;
             free(curr_n);
-        }
-        else
-        {
+        } else {
             pred_n -> next = curr_n -> next;
             free(curr_n);
         }
         return 1;
-    }
-    else
-    {
+    } else {
         return 0;
     }
 }
@@ -131,8 +113,7 @@ int Delete(int val, struct list_node **root_n)
 void Print(struct list_node *root)
 {
     struct list_node *temp = root;
-    while (temp != NULL)
-    {
+    while (temp != NULL) {
         printf("%d\n", temp -> data);
         temp = temp -> next;
     }
@@ -141,18 +122,14 @@ void Print(struct list_node *root)
 void* Test_List(void* rank)
 {
     long thread_rank = (long) rank;
-    if ((thread_rank % 10) == 0)
-    {
+    if ((thread_rank % 10) == 0) {
         pthread_rwlock_wrlock(&rw_lock);
         Delete((int)thread_rank, &root);
         pthread_rwlock_unlock(&rw_lock);
-    }
-    else if ((thread_rank % 5) == 0)
-    {
+    } else if ((thread_rank % 5) == 0) {
         pthread_rwlock_wrlock(&rw_lock);
         Insert((-1) * (int)thread_rank, &root);
         pthread_rwlock_unlock(&rw_lock);
     }
-
     return NULL;
 }

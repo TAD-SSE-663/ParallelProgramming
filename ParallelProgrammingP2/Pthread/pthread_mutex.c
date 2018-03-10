@@ -26,16 +26,14 @@ int main(int argc, char* argv[])
     char line[10];
     data = malloc(sizeof(int) * num_data);
     int line_index = 0;
-    while (line_index < num_data && fgets(line, sizeof(line), data_file) != NULL)
-    {
+    while (line_index < num_data && fgets(line, sizeof(line), data_file) != NULL) {
         data[line_index++] = strtol(line, NULL, 10);
     }
 
     // Serial Execution.
     clock_gettime(CLOCK_MONOTONIC, &s_t);
     int ser_sum = 0;
-    for (int i = 0; i < num_data; i++)
-    {
+    for (int i = 0; i < num_data; i++) {
         ser_sum += data[i];
     }
     clock_gettime(CLOCK_MONOTONIC, &e_t);
@@ -59,13 +57,11 @@ int main(int argc, char* argv[])
 	thread_handles = malloc(thread_count * sizeof(pthread_t));
 
 	// Creation of each of the threads. Starts each thread execution.
-	for (long thread = 0; thread < thread_count; thread++)
-	{
+	for (long thread = 0; thread < thread_count; thread++) {
 		pthread_create(&thread_handles[thread], NULL, Sum, (void*) thread);
     }
 	// Stopping of each of the threads.
-	for (long thread = 0; thread < thread_count; thread++)
-	{
+	for (long thread = 0; thread < thread_count; thread++) {
 		pthread_join(thread_handles[thread], NULL);
 	}
     pthread_mutex_destroy(&mutex); // Destory mutex.
@@ -88,8 +84,7 @@ void* Sum(void* rank)
     int num_loops = num_data / thread_count;
     int start_index = num_loops * thread_rank;
     int sum = 0;
-    for (int i = start_index; i < start_index + num_loops; i++)
-    {
+    for (int i = start_index; i < start_index + num_loops; i++) {
         sum += data[i];
     }
 
