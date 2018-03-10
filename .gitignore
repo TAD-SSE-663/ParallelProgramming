@@ -3,6 +3,12 @@
 ##
 ## Get latest from https://github.com/github/gitignore/blob/master/VisualStudio.gitignore
 
+# Tad's ignores
+*data1
+*data2
+*data3
+*data4
+
 # User-specific files
 *.suo
 *.user
