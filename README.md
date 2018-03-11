@@ -105,7 +105,3 @@ This solution consists of a group of console applications used to demonstrate pa
 -Take the maximum time of the individual processes. <br />
 -Run the program multiple times. <br />
 -Take the minimum time from multiple runs as the runtime. <br />
-
-# Distributed-Memory Programming with MPI
-# Shared-Memory Programming with Pthreads
-# Shared-Memory Programming with OpenMP
