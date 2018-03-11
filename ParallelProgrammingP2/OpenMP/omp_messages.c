@@ -4,26 +4,30 @@
 #	include <omp.h>
 #endif
 
-#define BILLION 1E9
+#define MSG_MAX 100
 
 int main(int argc, char* argv[])
 {
     printf("---    OpenMP Showcase - Messages    ---\n\n");
-
-    // Get file information.
-    FILE *data_file;
-    data_file = fopen(argv[1], "r");
-    int num_data = strtol(argv[2], NULL, 10);
-    int thread_count = strtol(argv[3], NULL, 10);
-    char line[10];
-    int *ser_data = malloc(sizeof(int) * num_data);
-    int *par_data = malloc(sizeof(int) * num_data);
-    int line_index = 0;
-    while (line_index < num_data && fgets(line, sizeof(line), data_file) != NULL) {
-        ser_data[line_index] = strtol(line, NULL, 10);
-        par_data[line_index++] = strtol(line, NULL, 10);
+    
+    int thread_count = strtol(argv[1], NULL, 10);
+    char** messages = malloc(thread_count * sizeof(char*));
+    int dest;
+    int curr_thread;
+    char* msg;
+#   pragma omp parallel num_threads(thread_count) default(none) \
+        private(dest, curr_thread, msg) shared(messages, thread_count)
+    {
+        curr_thread = omp_get_thread_num();
+        dest = (curr_thread + 1) % thread_count;
+        msg = malloc(MSG_MAX * sizeof(char));
+        sprintf(msg, "This is a message from %d to %d.", 
+            curr_thread, dest);
+        messages[dest] = msg;
+#       pragma omp barrier
+        printf("This thread is thread %d. Message: %s\n",
+            curr_thread, messages[curr_thread]);
     }
-
 
     system("pause");
     return 0;

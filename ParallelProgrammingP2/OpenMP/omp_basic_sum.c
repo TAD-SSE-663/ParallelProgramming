@@ -62,7 +62,7 @@ int main(int argc, char* argv[])
 #   pragma omp parallel num_threads(thread_count)
     {
         int sum = Sum(data, num_data);
-#       pragma omp critical
+#       pragma omp atomic
         tot_sum += sum;
     }
     clock_gettime(CLOCK_MONOTONIC, &e_t);
