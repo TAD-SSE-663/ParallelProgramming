@@ -9,7 +9,7 @@
             "type": "cppdbg",
             "request": "launch",
             "program": "${workspaceRoot}/pBarrier.exe",
-            "args": ["2"],
+            "args": ["4"],
             "stopAtEntry": false,
             "cwd": "${workspaceRoot}",
             "environment": [],

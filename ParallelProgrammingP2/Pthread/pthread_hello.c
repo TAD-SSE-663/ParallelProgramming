@@ -20,14 +20,14 @@ int main(int argc, char* argv[])
 	thread_count = strtol(argv[1], NULL, 10);
 	
 	// Serial execution.
-    clock_gettime(CLOCK_MONOTONIC, &ser_s_t);
+	clock_gettime(CLOCK_MONOTONIC, &ser_s_t);
 	printf("Hello from the main thread.\n");
-    for (int i = 0; i < thread_count; i++) {
-        printf("Hello from pseudo-thread %d of %d.\n", (i + 1), thread_count);
-    }
-    clock_gettime(CLOCK_MONOTONIC, &ser_e_t);
-    ser_tot_time = (ser_e_t.tv_sec - ser_s_t.tv_sec) +
-        (ser_e_t.tv_nsec - ser_s_t.tv_nsec) / BILLION;
+	for (int i = 0; i < thread_count; i++) {
+		printf("Hello from pseudo-thread %d of %d.\n", (i + 1), thread_count);
+	}
+	clock_gettime(CLOCK_MONOTONIC, &ser_e_t);
+	ser_tot_time = (ser_e_t.tv_sec - ser_s_t.tv_sec) +
+		(ser_e_t.tv_nsec - ser_s_t.tv_nsec) / BILLION;
 
 	// Parallel Execution.
     clock_gettime(CLOCK_MONOTONIC, &par_s_t);
