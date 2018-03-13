@@ -26,24 +26,6 @@ int main(int argc, char* argv[])
         data[line_index++] = strtol(line, NULL, 10);
     }
 
-
-    // Default Scheduling
-    clock_gettime(CLOCK_MONOTONIC, &s_t);
-    tot_sum = 0;
-#   pragma omp parallel for num_threads(thread_count) \
-        reduction(+:tot_sum) default(none) private(i) \
-        shared(num_data, data)
-    for (i = 0; i < num_data; i++) {
-        tot_sum += data[i];
-    }
-    clock_gettime(CLOCK_MONOTONIC, &e_t);
-    tot_time = (e_t.tv_sec - s_t.tv_sec) +
-        (e_t.tv_nsec - s_t.tv_nsec) / BILLION;
-    
-    printf("Default schedule sum: %d\n", tot_sum);
-    printf("Default schedule time: %lf\n\n", tot_time);
-
-
     // Static Scheduling - 100
     clock_gettime(CLOCK_MONOTONIC, &s_t);
     tot_sum = 0;
@@ -144,6 +126,23 @@ int main(int argc, char* argv[])
     
     printf("Guided 1000 schedule sum: %d\n", tot_sum);
     printf("Guided 1000 schedule time: %lf\n\n", tot_time);
+
+
+    // Default Scheduling
+    clock_gettime(CLOCK_MONOTONIC, &s_t);
+    tot_sum = 0;
+#   pragma omp parallel for num_threads(thread_count) \
+        reduction(+:tot_sum) default(none) private(i) \
+        shared(num_data, data)
+    for (i = 0; i < num_data; i++) {
+        tot_sum += data[i];
+    }
+    clock_gettime(CLOCK_MONOTONIC, &e_t);
+    tot_time = (e_t.tv_sec - s_t.tv_sec) +
+        (e_t.tv_nsec - s_t.tv_nsec) / BILLION;
+    
+    printf("Default schedule sum: %d\n", tot_sum);
+    printf("Default schedule time: %lf\n\n", tot_time);
 
     system("pause");
     return 0;
