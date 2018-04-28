@@ -1,5 +1,5 @@
-# ParallelProgrammingP2
-This solution consists of a group of console applications used to demonstrate parallel programming techniques such Pthreads, MPI, and OpenMP.
+# ParallelProgramming
+This directory consists of a group of console applications used to demonstrate parallel programming techniques such Pthreads, MPI, and OpenMP.
  
 # General Notes on Parallel Computing
 -We use multi-core ICs now because the limit of transistor size and heat dissipation is quickly being reached. <br />
