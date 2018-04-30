@@ -6,20 +6,16 @@
 
 int main(int argc, char* argv[])
 {
+    srand(1);
+    int num_data = strtol(argv[1], NULL, 10);
+    int *data = malloc(sizeof(int) * num_data);
+    for (int i = 0; i < num_data; i++) {
+        data[i] = (rand() % 100) + 1;
+    }
+    
     struct timespec s_t, e_t;
     double tot_time;
     int tot_sum;
-
-    // Get file information.
-    FILE *data_file;
-    int num_data = strtol(argv[1], NULL, 10);
-    data_file = fopen(argv[2], "r");
-    char line[10];
-    int *data = malloc(sizeof(int) * num_data);
-    int line_index = 0;
-    while (line_index < num_data && fgets(line, sizeof(line), data_file) != NULL) {
-        data[line_index++] = strtol(line, NULL, 10);
-    }
 
     // Serial execution.
     clock_gettime(CLOCK_MONOTONIC, &s_t);

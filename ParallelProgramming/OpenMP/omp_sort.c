@@ -7,25 +7,18 @@
 
 #define BILLION 1E9
 
+void setup(int* num_data, int **ser_data, int **par_data);
+
 int main(int argc, char* argv[])
 {
     printf("---    OpenMP Showcase - Sort    ---\n\n");
     struct timespec s_t, e_t;
     double tot_time;
+    int num_data;
+    int thread_count = strtol(argv[1], NULL, 10);
 
-    // Get file information.
-    FILE *data_file;
-    data_file = fopen(argv[1], "r");
-    int num_data = strtol(argv[2], NULL, 10);
-    int thread_count = strtol(argv[3], NULL, 10);
-    char line[10];
-    int *ser_data = malloc(sizeof(int) * num_data);
-    int *par_data = malloc(sizeof(int) * num_data);
-    int line_index = 0;
-    while (line_index < num_data && fgets(line, sizeof(line), data_file) != NULL) {
-        ser_data[line_index] = strtol(line, NULL, 10);
-        par_data[line_index++] = strtol(line, NULL, 10);
-    }
+    int *ser_data, *par_data;
+    setup(&num_data, &ser_data, &par_data);
 
     // Serial sort.
     clock_gettime(CLOCK_MONOTONIC, &s_t);
@@ -52,7 +45,7 @@ int main(int argc, char* argv[])
     clock_gettime(CLOCK_MONOTONIC, &e_t);
     tot_time = (e_t.tv_sec - s_t.tv_sec) +
         (e_t.tv_nsec - s_t.tv_nsec) / BILLION;
-    printf("\nSerial time: %lf\n\n", tot_time);
+    printf("Serial time: %lf\n", tot_time);
 
 
     // Parallel sort.
@@ -84,9 +77,21 @@ int main(int argc, char* argv[])
     clock_gettime(CLOCK_MONOTONIC, &e_t);
     tot_time = (e_t.tv_sec - s_t.tv_sec) +
         (e_t.tv_nsec - s_t.tv_nsec) / BILLION;
-    printf("\nParallel sort time: %lf\n\n", tot_time);
+    printf("Parallel sort time: %lf\n", tot_time);
 
-
-    system("pause");
     return 0;
+}
+
+void setup(int* num_data, int **ser_data, int **par_data)
+{
+    printf("Enter num_data: ");
+    fflush(stdout);
+    scanf("%d", num_data);
+    srand(1);
+    *ser_data = malloc(sizeof(int) * (*num_data));
+    *par_data = malloc(sizeof(int) * (*num_data));
+    for (int i = 0; i < (*num_data); i++) {
+        (*ser_data)[i] = (rand() % 100) + 1;
+        (*par_data)[i] = (*ser_data)[i];
+    }
 }
